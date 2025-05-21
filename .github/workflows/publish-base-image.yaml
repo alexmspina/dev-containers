@@ -6,7 +6,7 @@ on:
     paths:
       - 'Dockerfile.base'
       - '.github/workflows/publish-base.yml'
-    workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
   build-and-push-base:
