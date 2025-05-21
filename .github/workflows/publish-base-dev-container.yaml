@@ -1,0 +1,14 @@
+name: Build Image for Base Dev Container
+
+on:
+  push:
+    paths:
+      - './base/Dockerfile.base'
+
+jobs:
+  call-reusable:
+    uses: ./.github/workflows/publish-docker-image.yml
+    with:
+      dockerfile_path: base/Dockerfile.base
+      image_name: ghcr.io/${{ github.repository_owner }}/base-dev-container
+      context: base
