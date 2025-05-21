@@ -22,7 +22,7 @@ on:
 
 jobs:
   build-and-push:
-    runs-on: macos-latest
+    runs-on: ubuntu-24.04-arm
 
     steps:
       - name: Checkout code
