@@ -45,7 +45,6 @@ jobs:
           context: ${{ inputs.context }}
           file: ${{ inputs.dockerfile_path }}
           push: true
-          platforms: linux/arm64
           tags: ${{ inputs.image_name }}:temp
           provenance: false
           outputs: type=image,name=${{ inputs.image_name }},push=true
