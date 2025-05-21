@@ -44,7 +44,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile.base
-          push: false
+          push: true
           load: false
           tags: |
             ${{ env.IMAGE_NAME }}:latest
@@ -52,66 +52,3 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           outputs: type=image
-
-      - name: Save local digest
-        id: local_digest
-        run: |
-          echo "digest=${{ steps.build.outputs.digest }}" >> $GITHUB_OUTPUT
-          echo "DIGEST=${{ steps.build.outputs.digest }}" >> $GITHUB_ENV
-
-      - name: Get remote image digest with retries
-        id: remote_digest
-        run: |
-          set -e
-
-          GHCR_URL="https://ghcr.io/v2/${{ env.GHCR_OWNER }}/base-dev-image/manifests/latest"
-          AUTH_HEADER="Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"
-          ACCEPT_HEADER="Accept: application/vnd.oci.image.manifest.v1+json"
-
-          retry_count=0
-          max_retries=5
-          remote_digest=""
-
-          while [ $retry_count -lt $max_retries ]; do
-            echo "Attempt $((retry_count+1)) to fetch remote digest..."
-            response=$(curl -sSf -H "$AUTH_HEADER" -H "$ACCEPT_HEADER" "$GHCR_URL" || true)
-
-            if [ -n "$response" ]; then
-              remote_digest=$(echo "$response" | jq -r '.config.digest // empty')
-              if [ -n "$remote_digest" ]; then
-                echo "Successfully retrieved remote digest: $remote_digest"
-                break
-              fi
-            fi
-
-            retry_count=$((retry_count + 1))
-            sleep 2
-          done
-
-          echo "remote_digest=$remote_digest" >> $GITHUB_OUTPUT
-
-      - name: Compare digests and conditionally push
-        if: steps.local_digest.outputs.digest != steps.remote_digest.outputs.remote_digest
-        run: |
-          echo "Digests differ. Pushing updated image..."
-          docker buildx build \
-            --file ./Dockerfile.base \
-            --tag ${{ env.IMAGE_NAME }}:latest \
-            --tag ${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.short_sha }} \
-            --push \
-            --cache-from type=gha \
-            --cache-to type=gha,mode=max \
-            .
-
-      - name: Skip push (no changes)
-        if: steps.local_digest.outputs.digest == steps.remote_digest.outputs.remote_digest
-        run: echo "Image is unchanged. Skipping push."
-
-      - name: Make package public
-        if: steps.local_digest.outputs.digest != steps.remote_digest.outputs.remote_digest
-        run: |
-          echo "Setting package visibility to public..."
-          curl -X PATCH https://api.github.com/users/${{ env.GHCR_OWNER }}/packages/container/base-dev-image/visibility \
-            -H "Authorization: Bearer ${{ secrets.GHCR_PAT }}" \
-            -H "Accept: application/vnd.github+json" \
-            -d '{"visibility":"public"}'
