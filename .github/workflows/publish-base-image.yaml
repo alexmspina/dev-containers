@@ -17,12 +17,14 @@ jobs:
 
     env:
       IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/base-dev-image
-      SHORT_SHA: ${{ github.sha::0:7 }}
       GHCR_OWNER: ${{ github.repository_owner }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Set short SHA
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -43,7 +45,7 @@ jobs:
           push: false
           load: false
           tags: |
-            ${{ env.IMAGE_NAME }}:latest
+            ${{ env.IMAGE_NAME }}:latest 
             ${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -62,7 +64,7 @@ jobs:
           set -e
 
           GHCR_URL="https://ghcr.io/v2/${{ env.GHCR_OWNER }}/base-dev-image/manifests/latest"
-          AUTH_HEADER="Authorization: Bearer ${{ secrets.IMAGE_REPO_ACCESS_TOKEN }}"
+          AUTH_HEADER="Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"
           ACCEPT_HEADER="Accept: application/vnd.oci.image.manifest.v1+json"
 
           retry_count=0
@@ -109,6 +111,6 @@ jobs:
         run: |
           echo "Setting package visibility to public..."
           curl -X PATCH https://api.github.com/users/${{ env.GHCR_OWNER }}/packages/container/base-dev-image/visibility \
-            -H "Authorization: Bearer ${{ secrets.IMAGE_REPO_ACCESS_TOKEN }}" \
+            -H "Authorization: Bearer ${{ secrets.GHCR_PAT }}" \
             -H "Accept: application/vnd.github+json" \
             -d '{"visibility":"public"}'
