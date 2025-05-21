@@ -6,9 +6,9 @@ on:
       - main
     paths:
       - './base/Dockerfile.base'
-      - '.github/workflows/publish-base-dev-container.yml'
-      - '.github/workflows/publish-docker-image.yml'
-  workflow_call:
+      - '.github/workflows/publish-base-dev-container.yaml'
+      - '.github/workflows/publish-docker-image.yaml'
+  workflow_dispatch:
 
 jobs:
   call-reusable:
