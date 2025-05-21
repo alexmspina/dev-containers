@@ -2,8 +2,13 @@ name: Build Image for Base Dev Container
 
 on:
   push:
+    branches:
+      - main
     paths:
       - './base/Dockerfile.base'
+      - '.github/workflows/publish-base-dev-container.yml'
+      - '.github/workflows/publish-docker-image.yml'
+  workflow_call:
 
 jobs:
   call-reusable:
