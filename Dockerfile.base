@@ -1,0 +1,21 @@
+FROM sha256:52ae72b3b82b3bf1eaf0be3e90a2a12c490579eef634f4d41c83848f97c9c9f9
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    zsh \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL https://starship.rs/install.sh | sh -s -- -y \
+    && echo '\neval "$(starship init zsh)"' >> /etc/zsh/zshrc \
+    && echo '\neval "$(starship init bash)"' >> /etc/bash.bashrc
+
+COPY starship.toml /root/.config/starship.toml
+
+WORKDIR /app
+
+SHELL ["/usr/bin/zsh", "-c"]
+
+CMD [ "zsh" ]

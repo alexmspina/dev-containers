@@ -1,0 +1,114 @@
+name: Conditional Docker Publish to GHCR
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Dockerfile.base'
+      - '.github/workflows/publish-base.yml'
+
+jobs:
+  build-and-push-base:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    env:
+      IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/base-dev-image
+      SHORT_SHA: ${{ github.sha::0:7 }}
+      GHCR_OWNER: ${{ github.repository_owner }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.IMAGE_REPO_ACCESS_TOKEN }}
+
+      - name: Build image without pushing
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.base
+          push: false
+          load: false
+          tags: |
+            ${{ env.IMAGE_NAME }}:latest
+            ${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          outputs: type=docker,name=target,dest=/tmp/image.tar
+
+      - name: Get local image digest
+        id: local_digest
+        run: |
+          digest=$(docker buildx imagetools inspect ${{ env.IMAGE_NAME }}:latest | grep Digest | awk '{print $2}')
+          echo "digest=$digest" >> $GITHUB_OUTPUT
+          echo "Local digest: $digest"
+
+      - name: Get remote image digest with retries
+        id: remote_digest
+        run: |
+          set -e
+
+          GHCR_URL="https://ghcr.io/v2/${{ env.GHCR_OWNER }}/base-dev-image/manifests/latest"
+          AUTH_HEADER="Authorization: Bearer ${{ secrets.IMAGE_REPO_ACCESS_TOKEN }}"
+          ACCEPT_HEADER="Accept: application/vnd.oci.image.manifest.v1+json"
+
+          retry_count=0
+          max_retries=5
+          remote_digest=""
+
+          while [ $retry_count -lt $max_retries ]; do
+            echo "Attempt $((retry_count+1)) to fetch remote digest..."
+            response=$(curl -sSf -H "$AUTH_HEADER" -H "$ACCEPT_HEADER" "$GHCR_URL" || true)
+
+            if [ -n "$response" ]; then
+              remote_digest=$(echo "$response" | jq -r '.config.digest // empty')
+              if [ -n "$remote_digest" ]; then
+                echo "Successfully retrieved remote digest: $remote_digest"
+                break
+              fi
+            fi
+
+            retry_count=$((retry_count + 1))
+            sleep 2
+          done
+
+          echo "remote_digest=$remote_digest" >> $GITHUB_OUTPUT
+
+      - name: Compare digests and conditionally push
+        if: steps.local_digest.outputs.digest != steps.remote_digest.outputs.remote_digest
+        run: |
+          echo "Digests differ. Pushing updated image..."
+          docker buildx build \
+            --file ./Dockerfile.base \
+            --tag ${{ env.IMAGE_NAME }}:latest \
+            --tag ${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }} \
+            --push \
+            --cache-from type=gha \
+            --cache-to type=gha,mode=max \
+            .
+
+      - name: Skip push (no changes)
+        if: steps.local_digest.outputs.digest == steps.remote_digest.outputs.remote_digest
+        run: echo "Image is unchanged. Skipping push."
+
+      - name: Make package public
+        if: steps.local_digest.outputs.digest != steps.remote_digest.outputs.remote_digest
+        run: |
+          echo "Setting package visibility to public..."
+          curl -X PATCH https://api.github.com/users/${{ env.GHCR_OWNER }}/packages/container/base-dev-image/visibility \
+            -H "Authorization: Bearer ${{ secrets.IMAGE_REPO_ACCESS_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            -d '{"visibility":"public"}'
