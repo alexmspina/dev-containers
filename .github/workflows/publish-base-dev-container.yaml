@@ -18,5 +18,4 @@ jobs:
       image_name: ghcr.io/${{ github.repository_owner }}/base-dev-container
       context: base
     secrets:
-      IMAGE_REPO_ACCESS_TOKEN:
-        required: true
+      IMAGE_REPO_ACCESS_TOKEN: ${{ secrets.IMAGE_REPO_ACCESS_TOKEN }}
