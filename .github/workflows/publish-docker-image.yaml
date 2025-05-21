@@ -11,6 +11,11 @@ on:
         description: 'Full image name to push (e.g. ghcr.io/user/image)'
         required: true
         type: string
+      semantic_version:
+        description: 'Semantic version to tag the image with'
+        required: false
+        default: 'latest'
+        type: string
       context:
         description: 'Build context'
         required: false
@@ -45,22 +50,29 @@ jobs:
           context: ${{ inputs.context }}
           file: ${{ inputs.dockerfile_path }}
           push: true
-          tags: ${{ inputs.image_name }}:temp
+          tags: ${{ inputs.image_name }}:${{ inputs.semantic_version }}
           provenance: false
           outputs: type=image,name=${{ inputs.image_name }},push=true
 
-      - name: Get Digest
+      - name: Make image public
         run: |
-          echo "Digest: ${{ steps.build.outputs.digest }}"
-          echo "digest_sha=${{ steps.build.outputs.digest }}" >> $GITHUB_ENV
+          IMAGE_NAME=$(echo "${{ inputs.image_name }}" | sed 's|ghcr.io/||')
+          curl -L \
+            -X PATCH \
+            -H "Authorization: Bearer ${{ secrets.IMAGE_REPO_ACCESS_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/user/packages/container/$IMAGE_NAME/visibility \
+            -d '{"visibility":"public"}'
 
-      - name: Tag Image with Digest and Push Again
+      - name: Link repository to container image
         run: |
-          IMAGE="${{ inputs.image_name }}"
-          RAW_DIGEST="${{ env.digest_sha }}"
-          SHORT_DIGEST="${RAW_DIGEST#sha256:}"
-          SAFE_TAG="sha-${SHORT_DIGEST}"
+          IMAGE_NAME=$(echo "${{ inputs.image_name }}" | sed 's|ghcr.io/||')
+          OWNER=$(echo "$IMAGE_NAME" | cut -d/ -f1)
+          REPO=${{ github.repository }}
 
-          docker pull "${IMAGE}@${RAW_DIGEST}"
-          docker tag "${IMAGE}@${RAW_DIGEST}" "${IMAGE}:${SAFE_TAG}"
-          docker push "${IMAGE}:${SAFE_TAG}"
+          curl -L \
+            -X PATCH \
+            -H "Authorization: Bearer ${{ secrets.IMAGE_REPO_ACCESS_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/users/$OWNER/packages/container/$(basename "$IMAGE_NAME")/versions \
+            -d "{\"source_repository\":\"$REPO\"}"
