@@ -56,6 +56,11 @@ jobs:
 
       - name: Tag Image with Digest and Push Again
         run: |
-          docker pull "${{ inputs.image_name }}@${{ env.digest_sha }}"
-          docker tag "${{ inputs.image_name }}@${{ env.digest_sha }}" "${{ inputs.image_name }}:${{ env.digest_sha }}"
-          docker push "${{ inputs.image_name }}:${{ env.digest_sha }}"
+          IMAGE="${{ inputs.image_name }}"
+          RAW_DIGEST="${{ env.digest_sha }}"
+          SHORT_DIGEST="${RAW_DIGEST#sha256:}"
+          SAFE_TAG="sha-${SHORT_DIGEST}"
+
+          docker pull "${IMAGE}@${RAW_DIGEST}"
+          docker tag "${IMAGE}@${RAW_DIGEST}" "${IMAGE}:${SAFE_TAG}"
+          docker push "${IMAGE}:${SAFE_TAG}"
