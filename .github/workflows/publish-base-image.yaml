@@ -46,18 +46,16 @@ jobs:
           push: false
           load: false
           tags: |
-            ${{ env.IMAGE_NAME }}:latest 
-            ${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }}
+            ${{ env.IMAGE_NAME }}:latest
+            ${{ env.IMAGE_NAME }}:$SHORT_SHA
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          outputs: type=docker,name=target,dest=/tmp/image.tar
+          outputs: type=image
 
-      - name: Get local image digest
+      - name: Save local digest
         id: local_digest
         run: |
-          digest=$(docker buildx imagetools inspect ${{ env.IMAGE_NAME }}:latest | grep Digest | awk '{print $2}')
-          echo "digest=$digest" >> $GITHUB_OUTPUT
-          echo "Local digest: $digest"
+          echo "digest=${{ steps.build.outputs.digest }}" >> $GITHUB_OUTPUT
 
       - name: Get remote image digest with retries
         id: remote_digest
@@ -97,7 +95,7 @@ jobs:
           docker buildx build \
             --file ./Dockerfile.base \
             --tag ${{ env.IMAGE_NAME }}:latest \
-            --tag ${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }} \
+            --tag ${{ env.IMAGE_NAME }}:$SHORT_SHA \
             --push \
             --cache-from type=gha \
             --cache-to type=gha,mode=max \
@@ -115,3 +113,9 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.GHCR_PAT }}" \
             -H "Accept: application/vnd.github+json" \
             -d '{"visibility":"public"}'
+
+          # 🔁 If GHCR_OWNER is an organization, uncomment and use this instead:
+          # curl -X PATCH https://api.github.com/orgs/${{ env.GHCR_OWNER }}/packages/container/base-dev-image/visibility \
+          #   -H "Authorization: Bearer ${{ secrets.GHCR_PAT }}" \
+          #   -H "Accept: application/vnd.github+json" \
+          #   -d '{"visibility":"public"}'
