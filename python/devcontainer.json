@@ -10,20 +10,23 @@
             "extensions": [
                 "ms-python.python",
                 "ms-python.vscode-pylance",
-                "charliermarsh.ruff",              // Ruff VS Code extension
+                "charliermarsh.ruff",              // Ruff extension
                 "ms-toolsai.jupyter",
-                "esbenp.prettier-vscode",
                 "ms-azuretools.vscode-docker",
                 "vscodevim.vim"
             ],
             "settings": {
                 "python.defaultInterpreterPath": "/usr/local/bin/python",
-                "python.formatting.provider": "black",
                 "editor.formatOnSave": true,
+                "editor.codeActionsOnSave": {
+                    "source.fixAll": true,
+                    "source.organizeImports": true
+                },
                 "ruff.enable": true,
                 "ruff.path": "ruff",               // assumes ruff is in PATH
                 "ruff.lintOnSave": true,
                 "ruff.formatOnSave": true,
+                "ruff.organizeImports": true,
                 "terminal.integrated.defaultProfile.linux": "zsh"
             }
         }
