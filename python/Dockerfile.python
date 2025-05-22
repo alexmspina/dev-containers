@@ -24,6 +24,9 @@ COPY starship.toml /root/.config/starship.toml
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh -s -- -y && \
     mv ~/.cargo/bin/uv /usr/local/bin/
 
+RUN uv tool install ruff@latest &&  \
+    uv add --dev ruff
+
 # Create working directory
 WORKDIR /app
 
