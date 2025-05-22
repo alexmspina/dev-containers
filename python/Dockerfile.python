@@ -1,0 +1,32 @@
+FROM ubuntu/python:3.12-24.04_stable@sha256:e9426c4c17d35ef1775ba0c54ad12ab5b5bade54981e769aad13030ad7fb9487
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    curl \
+    zsh \
+    ca-certificates \
+    build-essential \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Starship prompt
+RUN curl -fsSL https://starship.rs/install.sh | sh -s -- -y && \
+    echo '\neval "$(starship init zsh)"' >> /etc/zsh/zshrc && \
+    echo '\neval "$(starship init bash)"' >> /etc/bash.bashrc
+
+# Copy starship config
+COPY ../starship.toml /root/.config/starship.toml
+
+# Install uv (Python packaging and venv tool)
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh -s -- -y && \
+    mv ~/.cargo/bin/uv /usr/local/bin/
+
+# Create working directory
+WORKDIR /app
+
+# Set default shell to zsh
+SHELL ["/usr/bin/zsh", "-c"]
+CMD ["zsh"]

@@ -1,11 +1,11 @@
-name: Build Image for Base Dev Container
+name: Build Image for Python 3.12 Dev Container
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'base/Dockerfile.base'
+      - 'python/Dockerfile.python'
   workflow_dispatch:
 
 jobs:
@@ -13,8 +13,8 @@ jobs:
     uses: ./.github/workflows/publish-docker-image.yaml
     with:
       dockerfile_path: base/Dockerfile.base
-      image_name: ghcr.io/${{ github.repository_owner }}/base-dev-container
+      image_name: ghcr.io/${{ github.repository_owner }}/python-3.12-dev-container
       context: base
-      semantic_version: '0.0.2'
+      semantic_version: '0.0.1'
     secrets:
       IMAGE_REPO_ACCESS_TOKEN: ${{ secrets.IMAGE_REPO_ACCESS_TOKEN }}
