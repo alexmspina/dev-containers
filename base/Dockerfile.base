@@ -13,7 +13,7 @@ RUN curl -fsSL https://starship.rs/install.sh | sh -s -- -y \
     && echo '\neval "$(starship init zsh)"' >> /etc/zsh/zshrc \
     && echo '\neval "$(starship init bash)"' >> /etc/bash.bashrc
 
-COPY ../starship.toml /root/.config/starship.toml
+COPY starship.toml /root/.config/starship.toml
 
 WORKDIR /app
 

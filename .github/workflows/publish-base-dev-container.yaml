@@ -14,7 +14,7 @@ jobs:
     with:
       dockerfile_path: base/Dockerfile.base
       image_name: ghcr.io/${{ github.repository_owner }}/base-dev-container
-      context: base
+      context: .
       semantic_version: '0.0.2'
     secrets:
       IMAGE_REPO_ACCESS_TOKEN: ${{ secrets.IMAGE_REPO_ACCESS_TOKEN }}

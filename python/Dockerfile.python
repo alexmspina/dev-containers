@@ -18,7 +18,7 @@ RUN curl -fsSL https://starship.rs/install.sh | sh -s -- -y && \
     echo '\neval "$(starship init bash)"' >> /etc/bash.bashrc
 
 # Copy starship config
-COPY ../starship.toml /root/.config/starship.toml
+COPY starship.toml /root/.config/starship.toml
 
 # Install uv (Python packaging and venv tool)
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh -s -- -y && \
