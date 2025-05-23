@@ -28,8 +28,7 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
 ENV PATH="/root/.local/bin:$PATH"
 
-RUN uv tool install ruff@latest &&  \
-    uv add --dev ruff
+RUN uv tool install ruff@latest
 
 WORKDIR /app
 
