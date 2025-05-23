@@ -9,7 +9,6 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Install Go 1.24.3 and golangci-lint
 RUN curl -LO https://go.dev/dl/go1.24.3.linux-arm64.tar.gz && \
     rm -rf /usr/local/go && \
     tar -C /usr/local -xzf go1.24.3.linux-arm64.tar.gz && \
