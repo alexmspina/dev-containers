@@ -53,7 +53,11 @@ jobs:
           tags: ${{ inputs.image_name }}:${{ inputs.semantic_version }}
           provenance: false
           outputs: type=image,name=${{ inputs.image_name }},push=true
-      
+
+  make-image-public:
+    runs-on: ubuntu-24.04-arm
+
+    steps:
       - name: Make GHCR image public
         run: |
           curl -X PATCH \
