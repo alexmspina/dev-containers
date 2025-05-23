@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  go-dev:
+    build: .
+    volumes:
+      - .:/app
+    stdin_open: true
+    tty: true 

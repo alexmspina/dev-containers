@@ -1,19 +1,19 @@
-name: Build Image for Python 3.12 Dev Container
+name: Build Image for Go 1.24.3 Dev Container
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'python/Dockerfile.python'
+      - 'go/Dockerfile.go'
   workflow_dispatch:
 
 jobs:
   call-reusable:
     uses: ./.github/workflows/publish-docker-image.yaml
     with:
-      dockerfile_path: python/Dockerfile.python
-      image_name: ghcr.io/${{ github.repository_owner }}/python-3.12-dev-container
+      dockerfile_path: go/Dockerfile.go
+      image_name: ghcr.io/${{ github.repository_owner }}/go-1.24.3-dev-container
       context: .
       semantic_version: '0.0.1'
     secrets:

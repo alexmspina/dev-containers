@@ -1,5 +1,8 @@
 FROM ubuntu/python:3.12-24.04_stable@sha256:e9426c4c17d35ef1775ba0c54ad12ab5b5bade54981e769aad13030ad7fb9487
 
+LABEL org.opencontainers.image.source=https://github.com/alexmspina/dev-containers
+LABEL org.opencontainers.image.description="Python 3.12 Development Container"
+
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Install system dependencies
