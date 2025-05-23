@@ -1,4 +1,4 @@
-FROM ubuntu:noble@sha256:dc17125eaac86538c57da886e494a34489122fb6a3ebb6411153d742594c2ddc
+FROM ubuntu:noble@sha256:736e224eff152057af468d34e0a495e57e7f70d274a012897d10461527f0ca55
 
 LABEL org.opencontainers.image.source=https://github.com/alexmspina/dev-containers
 LABEL org.opencontainers.image.description="Base Development Container"
