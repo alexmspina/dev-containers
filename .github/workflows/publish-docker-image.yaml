@@ -8,7 +8,7 @@ on:
         required: true
         type: string
       image_name:
-        description: 'Full image name to push (e.g. ghcr.io/user/image)'
+        description: 'Container image name without ghcr.io/repo-name (e.g. image)'
         required: true
         type: string
       semantic_version:
@@ -50,9 +50,9 @@ jobs:
           context: ${{ inputs.context }}
           file: ${{ inputs.dockerfile_path }}
           push: true
-          tags: ${{ inputs.image_name }}:${{ inputs.semantic_version }}
+          tags: ghcr.io/${{ github.repository_owner }}/${{ inputs.image_name }}:${{ inputs.semantic_version }}
           provenance: false
-          outputs: type=image,name=${{ inputs.image_name }},push=true
+          outputs: type=image,name=ghcr.io/${{ github.repository_owner }}/${{ inputs.image_name }},push=true
 
   make-image-public:
     runs-on: ubuntu-24.04-arm

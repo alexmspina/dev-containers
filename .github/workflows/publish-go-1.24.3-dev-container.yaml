@@ -13,7 +13,7 @@ jobs:
     uses: ./.github/workflows/publish-docker-image.yaml
     with:
       dockerfile_path: go/Dockerfile.go
-      image_name: ghcr.io/${{ github.repository_owner }}/go-1.24.3-dev-container
+      image_name: go-1.24.3-dev-container
       context: .
       semantic_version: '0.0.1'
     secrets:
