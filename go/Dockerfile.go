@@ -3,6 +3,8 @@ FROM ghcr.io/alexmspina/base-dev-container:0.0.2
 LABEL org.opencontainers.image.source=https://github.com/alexmspina/dev-containers
 LABEL org.opencontainers.image.description="Go 1.24.3 Development Container"
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 # Install Go 1.24.3 and golangci-lint
 RUN curl -LO https://go.dev/dl/go1.24.3.linux-arm64.tar.gz && \
     rm -rf /usr/local/go && \
