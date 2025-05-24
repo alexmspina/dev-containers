@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   python-dev:
-    build: .
+    image: ghcr.io/alexmspina/python-3.13-dev-container:0.0.1
     volumes:
       - .:/app
     stdin_open: true

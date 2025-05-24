@@ -1,4 +1,4 @@
-name: Build Image for Python 3.12 Dev Container
+name: Build Image for Python 3.13 Dev Container
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
     uses: ./.github/workflows/publish-docker-image.yaml
     with:
       dockerfile_path: python/Dockerfile.python
-      image_name: python-3.12-dev-container
+      image_name: python-3.13-dev-container
       context: .
       semantic_version: '0.0.1'
     secrets:

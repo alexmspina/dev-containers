@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   go-dev:
-    build: .
+    image: ghcr.io/alexmspina/go-1.24.3-dev-container:0.0.1
     volumes:
       - .:/app
     stdin_open: true
