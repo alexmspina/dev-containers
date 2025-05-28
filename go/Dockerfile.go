@@ -6,7 +6,6 @@ LABEL org.opencontainers.image.description="Go 1.24.3 Development Container"
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
-    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 RUN curl -LO https://go.dev/dl/go1.24.3.linux-arm64.tar.gz && \
