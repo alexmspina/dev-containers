@@ -3,7 +3,7 @@
     "dockerComposeFile": "../docker-compose.yml",
     "service": "python-dev",
     "workspaceFolder": "/app",
-    "remoteUser": "vscode",
+    "remoteUser": "root",
     "overrideCommand": true,
     "customizations": {
         "vscode": {
