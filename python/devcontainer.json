@@ -3,14 +3,14 @@
     "dockerComposeFile": "../docker-compose.yml",
     "service": "python-dev",
     "workspaceFolder": "/app",
-    "remoteUser": "root",
+    "remoteUser": "vscode",
     "overrideCommand": true,
     "customizations": {
         "vscode": {
             "extensions": [
                 "ms-python.python",
                 "ms-python.vscode-pylance",
-                "charliermarsh.ruff",              // Ruff extension
+                "charliermarsh.ruff", // Ruff extension
                 "ms-toolsai.jupyter",
                 "ms-azuretools.vscode-docker",
                 "vscodevim.vim"
@@ -23,16 +23,12 @@
                     "source.organizeImports": true
                 },
                 "ruff.enable": true,
-                "ruff.path": "ruff",               // assumes ruff is in PATH
+                "ruff.path": "ruff", // assumes ruff is in PATH
                 "ruff.lintOnSave": true,
                 "ruff.formatOnSave": true,
                 "ruff.organizeImports": true,
                 "terminal.integrated.defaultProfile.linux": "zsh"
             }
         }
-    },
-    "initializeCommand": "limactl start default || true",
-    "mounts": [
-        "source=${localWorkspaceFolder},target=/app,type=bind,consistency=cached"
-    ]
+    }
 }

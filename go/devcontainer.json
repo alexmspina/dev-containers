@@ -3,7 +3,7 @@
     "dockerComposeFile": "../docker-compose.yml",
     "service": "go-dev",
     "workspaceFolder": "/app",
-    "remoteUser": "root",
+    "remoteUser": "vscode",
     "overrideCommand": true,
     "customizations": {
         "vscode": {
@@ -27,9 +27,5 @@
                 "terminal.integrated.defaultProfile.linux": "zsh"
             }
         }
-    },
-    "initializeCommand": "limactl start default || true",
-    "mounts": [
-        "source=${localWorkspaceFolder},target=/app,type=bind,consistency=cached"
-    ]
+    }
 }
