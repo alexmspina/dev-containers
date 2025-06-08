@@ -5,8 +5,6 @@ LABEL org.opencontainers.image.description="Base Development Container"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN deb [trusted=yes] https://apt.fury.io/rsteube/
-
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     git \
@@ -16,7 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     fzf \
     ripgrep \
     fd-find \
-    carapace-bin \
+    carapace \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL https://starship.rs/install.sh | sh -s -- -y
