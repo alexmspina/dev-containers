@@ -15,6 +15,6 @@ jobs:
       dockerfile_path: base/Dockerfile.base
       image_name: base-dev-container
       context: .
-      semantic_version: '0.0.1'
+      semantic_version: '0.0.2'
     secrets:
       IMAGE_REPO_ACCESS_TOKEN: ${{ secrets.IMAGE_REPO_ACCESS_TOKEN }}

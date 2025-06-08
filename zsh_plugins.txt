@@ -1,0 +1,7 @@
+rupa/z
+zsh-users/zsh-completions
+mattmc3/zfunctions
+zsh-users/zsh-autosuggestions
+zdharma-continuum/fast-syntax-highlighting kind:defer
+zsh-users/zsh-history-substring-search
+softmoth/zsh-vim-mode

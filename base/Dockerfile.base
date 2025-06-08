@@ -7,16 +7,21 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
-    make \
     git \
     curl \
     zsh \
     ca-certificates \
+    fzf \
+    ripgrep \
+    fd-find \
+    carapace-bin \
     && rm -rf /var/lib/apt/lists/*
 
-RUN curl -fsSL https://starship.rs/install.sh | sh -s -- -y \
-    && echo '\neval "$(starship init zsh)"' >> /etc/zsh/zshrc \
-    && echo '\neval "$(starship init bash)"' >> /etc/bash.bashrc
+RUN curl -fsSL https://starship.rs/install.sh | sh -s -- -y
+
+RUN git clone --depth=1 https://github.com/mattmc3/antidote.git /root/.antidote
+
+COPY zshrc /root/.zshrc
 
 COPY starship.toml /root/.config/starship.toml
 
