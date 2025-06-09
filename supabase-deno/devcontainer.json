@@ -1,5 +1,5 @@
 {
-    "name": "Supabase Deno Development Container",
+    "name": "Supabase CLI 2.24.3 with Deno 2.3.5 Development Container",
     "dockerComposeFile": "../docker-compose.yml",
     "service": "supabase-deno-dev",
     "workspaceFolder": "/app",
