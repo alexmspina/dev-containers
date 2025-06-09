@@ -9,9 +9,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
-RUN deno install -g npm:supabase
-
 RUN curl -fsSL https://deno.land/install.sh | sh
+
+RUN deno install -g npm:supabase
 
 WORKDIR /app
 
