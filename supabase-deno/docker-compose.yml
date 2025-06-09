@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   supabase-deno-dev:
-    image: ghcr.io/alexmspina/supabase-deno-dev-container:0.0.1
+    image: ghcr.io/alexmspina/supabase-cli-2.24.3-deno-2.3.5-dev-container:0.0.1
     volumes:
       - .:/app
     stdin_open: true
