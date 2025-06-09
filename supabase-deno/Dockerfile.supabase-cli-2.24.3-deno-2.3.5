@@ -13,7 +13,7 @@ RUN curl -fsSL https://deno.land/install.sh | sh -s v2.3.5
 
 ENV PATH="$PATH:/root/.deno/bin"
 
-RUN deno install -g npm:supabase-cli@2.24.3
+RUN deno install -g npm:supabase@2.24.3
 
 WORKDIR /app
 
