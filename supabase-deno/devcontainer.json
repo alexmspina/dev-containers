@@ -1,0 +1,42 @@
+{
+    "name": "Supabase Deno Development Container",
+    "dockerComposeFile": "../docker-compose.yml",
+    "service": "supabase-deno-dev",
+    "workspaceFolder": "/app",
+    "remoteUser": "root",
+    "overrideCommand": true,
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.vscode-typescript-next",
+                "denoland.vscode-deno",
+                "supabase.supabase",
+                "prisma.prisma",
+                "bradlc.vscode-tailwindcss",
+                "esbenp.prettier-vscode",
+                "microsoft.vscode-postgresql",
+                "ms-azuretools.vscode-docker",
+                "vscodevim.vim"
+            ],
+            "settings": {
+                "typescript.tsdk": "node_modules/typescript/lib",
+                "deno.enable": true,
+                "deno.lint": true,
+                "deno.unstable": true,
+                "deno.suggest.imports.hosts": {
+                    "https://deno.land": true,
+                    "https://cdn.nest.land": true,
+                    "https://esm.sh": true
+                },
+                "editor.formatOnSave": true,
+                "editor.codeActionsOnSave": {
+                    "source.fixAll": true,
+                    "source.organizeImports": true
+                },
+                "prettier.enable": true,
+                "prettier.requireConfig": true,
+                "terminal.integrated.defaultProfile.linux": "zsh"
+            }
+        }
+    }
+}

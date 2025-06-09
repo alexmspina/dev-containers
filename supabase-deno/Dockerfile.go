@@ -1,0 +1,16 @@
+FROM ghcr.io/alexmspina/base-dev-container:0.0.2
+
+LABEL org.opencontainers.image.source=https://github.com/alexmspina/dev-containers
+LABEL org.opencontainers.image.description="Supabase Deno 2 Development Container"
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL https://deno.land/install.sh | sh
+
+WORKDIR /app
+
+SHELL ["/usr/bin/zsh", "-c"]
+CMD ["zsh"]

@@ -1,4 +1,4 @@
-FROM ghcr.io/alexmspina/base-dev-container:0.0.1
+FROM ghcr.io/alexmspina/base-dev-container:0.0.2
 
 LABEL org.opencontainers.image.source=https://github.com/alexmspina/dev-containers
 LABEL org.opencontainers.image.description="Go 1.24.3 Development Container"

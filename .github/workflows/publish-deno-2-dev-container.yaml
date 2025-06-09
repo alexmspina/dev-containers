@@ -1,0 +1,20 @@
+name: Build Image for Deno 2 Dev Container
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'supabase-deno/Dockerfile.go'
+  workflow_dispatch:
+
+jobs:
+  call-reusable:
+    uses: ./.github/workflows/publish-docker-image.yaml
+    with:
+      dockerfile_path: supabase-deno/Dockerfile.go
+      image_name: supabase-deno-dev-container
+      context: .
+      semantic_version: '0.0.1'
+    secrets:
+      IMAGE_REPO_ACCESS_TOKEN: ${{ secrets.IMAGE_REPO_ACCESS_TOKEN }}
