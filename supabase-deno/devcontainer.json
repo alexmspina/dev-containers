@@ -10,7 +10,6 @@
             "extensions": [
                 "ms-vscode.vscode-typescript-next",
                 "denoland.vscode-deno",
-                "supabase.vscode-supabase-extension",
                 "microsoft.vscode-postgresql"
             ],
             "settings": {
