@@ -10,13 +10,8 @@
             "extensions": [
                 "ms-vscode.vscode-typescript-next",
                 "denoland.vscode-deno",
-                "supabase.supabase",
-                "prisma.prisma",
-                "bradlc.vscode-tailwindcss",
-                "esbenp.prettier-vscode",
-                "microsoft.vscode-postgresql",
-                "ms-azuretools.vscode-docker",
-                "vscodevim.vim"
+                "supabase.vscode-supabase-extension",
+                "microsoft.vscode-postgresql"
             ],
             "settings": {
                 "typescript.tsdk": "node_modules/typescript/lib",
