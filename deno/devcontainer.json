@@ -1,7 +1,7 @@
 {
-    "name": "Supabase CLI 2.24.3 with Deno 2.3.5 Development Container",
+    "name": "Deno 2.3.5 Development Container",
     "dockerComposeFile": "../docker-compose.yml",
-    "service": "supabase-deno-dev",
+    "service": "deno-dev",
     "workspaceFolder": "/app",
     "remoteUser": "root",
     "overrideCommand": true,

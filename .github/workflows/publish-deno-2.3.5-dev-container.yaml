@@ -1,19 +1,19 @@
-name: Build Image for Supabase CLI 2.24.3 with Deno 2.3.5 Dev Container
+name: Build Image for Deno 2.3.5 Dev Container
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'supabase-deno/Dockerfile.supabase-cli-2.24.3-deno-2.3.5'
+      - 'deno/Dockerfile.deno-2.3.5'
   workflow_dispatch:
 
 jobs:
   call-reusable:
     uses: ./.github/workflows/publish-docker-image.yaml
     with:
-      dockerfile_path: supabase-deno/Dockerfile.supabase-cli-2.24.3-deno-2.3.5
-      image_name: supabase-cli-2.24.3-deno-2.3.5-dev-container
+      dockerfile_path: deno/Dockerfile.deno-2.3.5
+      image_name: deno-2.3.5-dev-container
       context: .
       semantic_version: '0.0.1'
     secrets:
