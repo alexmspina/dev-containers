@@ -5,7 +5,8 @@ LABEL org.opencontainers.image.description="Supabase Deno 2 Development Containe
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    unzip \
     rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL https://deno.land/install.sh | sh

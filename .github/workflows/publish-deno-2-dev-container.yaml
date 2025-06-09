@@ -5,14 +5,14 @@ on:
     branches:
       - main
     paths:
-      - 'supabase-deno/Dockerfile.go'
+      - 'supabase-deno/Dockerfile.supabase-deno'
   workflow_dispatch:
 
 jobs:
   call-reusable:
     uses: ./.github/workflows/publish-docker-image.yaml
     with:
-      dockerfile_path: supabase-deno/Dockerfile.go
+      dockerfile_path: supabase-deno/Dockerfile.supabase-deno
       image_name: supabase-deno-dev-container
       context: .
       semantic_version: '0.0.1'
