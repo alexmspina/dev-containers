@@ -30,11 +30,6 @@ eval "$(starship init zsh)"
 bindkey "^[[A" history-beginning-search-backward
 bindkey "^[[B" history-beginning-search-forward
 
-## Completions
-export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense'
-zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
-source <(carapace _carapace)
-
 ## Fuzzy Searching
 ### Files and Directories
 export FZF_DEFAULT_COMMAND='fd --type file --hidden --follow --exclude .git'
